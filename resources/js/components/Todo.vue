@@ -45,6 +45,7 @@
         </button>
       </footer>
     </section>
+    <p>Double click for edit item</p>
     <p>Larvel 6.x and Vue 2 <a href="https://github.com/code4mk/laravel-vue-todos" target="_blank">@code4mk github</a> </p>
 </div>
 

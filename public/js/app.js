@@ -1987,6 +1987,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -2944,6 +2945,8 @@ var render = function() {
           ])
         : _vm._e()
     ]),
+    _vm._v(" "),
+    _c("p", [_vm._v("Double click for edit item")]),
     _vm._v(" "),
     _vm._m(0)
   ])
