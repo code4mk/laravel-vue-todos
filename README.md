@@ -2,3 +2,31 @@
 
 # laravel-vue-todos
 Todos with laravel and vue.js
+
+# clone the project
+
+```bash
+git clone https://github.com/code4mk/laravel-vue-todos
+```
+
+# composer install and key generate
+
+```bash
+composer install
+php artisan key:generate
+```
+
+# Node
+
+```bash
+# yarn
+yarn install
+yarn run dev
+#npm
+npm install
+npm run dev
+```
+
+# Live demo on heroku
+
+* [Live demo on heroku](https://laravel-vue-todos.herokuapp.com/)
