@@ -2875,6 +2875,7 @@ var render = function() {
                   "a",
                   {
                     class: { selected: _vm.visibility == "all" },
+                    attrs: { href: "javascript:void(0)" },
                     on: {
                       click: function($event) {
                         return _vm.filterNow("all")
@@ -2890,6 +2891,7 @@ var render = function() {
                   "a",
                   {
                     class: { selected: _vm.visibility == "active" },
+                    attrs: { href: "javascript:void(0)" },
                     on: {
                       click: function($event) {
                         return _vm.filterNow("active")
@@ -2905,6 +2907,7 @@ var render = function() {
                   "a",
                   {
                     class: { selected: _vm.visibility == "completed" },
+                    attrs: { href: "javascript:void(0)" },
                     on: {
                       click: function($event) {
                         return _vm.filterNow("completed")

@@ -36,9 +36,9 @@
           <strong>{{ activeTodo }}</strong>  left
         </span>
         <ul class="filters">
-          <li><a  :class="{ selected: visibility == 'all' }" @click="filterNow('all')">All</a></li>
-          <li><a  :class="{ selected: visibility == 'active' }" @click="filterNow('active')">Active</a></li>
-          <li><a  :class="{ selected: visibility == 'completed' }" @click="filterNow('completed')">Completed</a></li>
+          <li><a href="javascript:void(0)" :class="{ selected: visibility == 'all' }" @click="filterNow('all')">All</a></li>
+          <li><a href="javascript:void(0)" :class="{ selected: visibility == 'active' }" @click="filterNow('active')">Active</a></li>
+          <li><a href="javascript:void(0)" :class="{ selected: visibility == 'completed' }" @click="filterNow('completed')">Completed</a></li>
         </ul>
         <button class="clear-completed" v-if="hasCompleted" @click="deleteTodo('')">
           Clear completed
