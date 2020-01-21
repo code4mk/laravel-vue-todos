@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('todo');
 });
 
-Route::get('todo/add', 'TodoController@add')->name('todo.add');
+Route::post('todo/add', 'TodoController@add')->name('todo.add');
 Route::get('todo/get', 'TodoController@get')->name('todo.get');
 Route::get('todo/update', 'TodoController@update')->name('todo.update');
 Route::get('todo/action', 'TodoController@todoAction')->name('todo.action');

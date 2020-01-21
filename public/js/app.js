@@ -1988,6 +1988,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+var token = document.head.querySelector('meta[name="csrf-token"]');
+axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+if (token) {
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1999,7 +2006,7 @@ __webpack_require__.r(__webpack_exports__);
       editedTodo: null,
       beforeEditCache: '',
       hasTodo: false,
-      has_completed: false,
+      hasCompleted: false,
       name: ''
     };
   },
@@ -2007,10 +2014,8 @@ __webpack_require__.r(__webpack_exports__);
     addTodo: function addTodo() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/add', {
-        params: {
-          name: this.newTodo
-        }
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('todo/add', {
+        name: this.newTodo
       }).then(function (response) {
         _this.newTodo = '';
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
@@ -2060,31 +2065,17 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     activeTodoNow: function activeTodoNow(id, e) {
-      var _this3 = this;
-
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/action', {
         params: {
           type: e ? 'complete' : ' ',
           id: id
         }
       }).then(function (response) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
-          params: {
-            type: _this3.visibility
-          }
-        }).then(function (response) {
-          _this3.activeTodo = response.data.active_now;
-
-          if (response.data.has_completed > 0) {
-            _this3.hasCompleted = true;
-          } else {
-            _this3.hasCompleted = false;
-          }
-        });
+        Fire.$emit('get_data');
       });
     },
     filterNow: function filterNow(e) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.visibility = e;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
@@ -2093,10 +2084,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         if (response.data.todo.length > 0) {
-          _this4.activeTodo = response.data.active_now;
+          _this3.activeTodo = response.data.active_now;
         }
 
-        _this4.todos = response.data.todo;
+        _this3.todos = response.data.todo;
       });
     },
     editTodo: function editTodo(todo) {
@@ -2104,7 +2095,7 @@ __webpack_require__.r(__webpack_exports__);
       this.editedTodo = todo;
     },
     doneEdit: function doneEdit(id) {
-      var _this5 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/update', {
         params: {
@@ -2112,25 +2103,27 @@ __webpack_require__.r(__webpack_exports__);
           name: this.name
         }
       }).then(function (response) {
-        if (!_this5.editedTodo) {
+        if (!_this4.editedTodo) {
           return;
         }
 
-        _this5.editedTodo = null;
+        _this4.editedTodo = null;
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
           params: {
-            type: _this5.visibility
+            type: _this4.visibility
           }
         }).then(function (response) {
-          _this5.todos = response.data.todo;
-          _this5.activeTodo = response.data.active_now;
+          _this4.todos = response.data.todo;
+          _this4.activeTodo = response.data.active_now;
         });
       });
-      console.log(id);
+    },
+    cancelEdit: function cancelEdit() {
+      this.editedTodo = null;
     }
   },
   created: function created() {
-    var _this6 = this;
+    var _this5 = this;
 
     this.visibility = 'all';
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
@@ -2138,16 +2131,31 @@ __webpack_require__.r(__webpack_exports__);
         type: 'all'
       }
     }).then(function (response) {
-      _this6.todos = response.data.todo;
-      _this6.activeTodo = response.data.active_now;
+      _this5.todos = response.data.todo;
+      _this5.activeTodo = response.data.active_now;
 
       if (response.data.has_completed > 0) {
-        _this6.hasCompleted = true;
+        _this5.hasCompleted = true;
       }
 
-      if (_this6.todos.length > 0) {
-        _this6.hasTodo = true;
+      if (_this5.todos.length > 0) {
+        _this5.hasTodo = true;
       }
+    });
+    Fire.$on('get_data', function () {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('todo/get', {
+        params: {
+          type: _this5.visibility
+        }
+      }).then(function (response) {
+        _this5.activeTodo = response.data.active_now;
+
+        if (response.data.has_completed > 0) {
+          _this5.hasCompleted = true;
+        } else {
+          _this5.hasCompleted = false;
+        }
+      });
     });
   },
   directives: {

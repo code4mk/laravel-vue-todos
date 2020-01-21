@@ -53,6 +53,13 @@
 
 <script>
 import axios from 'axios'
+let token = document.head.querySelector('meta[name="csrf-token"]');
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+if (token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
 export default {
     data () {
       return {
@@ -64,16 +71,14 @@ export default {
         editedTodo: null,
         beforeEditCache: '',
         hasTodo: false,
-        has_completed: false,
+        hasCompleted: false,
         name: ''
       }
   },
   methods: {
     addTodo: function () {
-        axios.get('todo/add',{
-            params: {
+        axios.post('todo/add',{
                 name: this.newTodo
-            }
         }).then((response)=>{
             this.newTodo = ''
             axios.get('todo/get',{
@@ -125,18 +130,7 @@ export default {
               id:id
           }
       }).then((response)=>{
-          axios.get('todo/get',{
-              params:{
-                  type: this.visibility
-              }
-          }).then((response)=>{
-              this.activeTodo = response.data.active_now
-              if(response.data.has_completed > 0) {
-                  this.hasCompleted = true
-              }else{
-                  this.hasCompleted = false
-              }
-          })
+          Fire.$emit('get_data')
       })
   },
 
@@ -177,13 +171,14 @@ export default {
               this.activeTodo = response.data.active_now
           })
       })
-
-      console.log(id)
+  },
+  cancelEdit: function() {
+      this.editedTodo = null
   }
 
 },
   created: function () {
-      this.visibility = 'all'
+     this.visibility = 'all'
     axios.get('todo/get',{
         params:{
             type: 'all'
@@ -198,6 +193,22 @@ export default {
             this.hasTodo = true
         }
     })
+    Fire.$on('get_data',()=>{
+        axios.get('todo/get',{
+            params:{
+                type: this.visibility
+            }
+        }).then((response)=>{
+            this.activeTodo = response.data.active_now
+            if(response.data.has_completed > 0) {
+                this.hasCompleted = true
+            }else{
+                this.hasCompleted = false
+            }
+        })
+    })
+
+
 },
 
 directives: {
