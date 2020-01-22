@@ -14,6 +14,7 @@ git clone https://github.com/code4mk/laravel-vue-todos
 ```bash
 composer install
 php artisan key:generate
+php artisan migrate
 ```
 
 # Node
